@@ -1,0 +1,130 @@
+<#@ template language="C#" #>
+<#@ import namespace="System.Linq" #>
+#if !UNITASK_SUPPLEMENT_DISABLE_WHEN_ANY
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
+using System.Threading;
+using Cysharp.Threading.Tasks.Internal;
+
+namespace Cysharp.Threading.Tasks
+{
+    public partial struct UniTask
+    {
+<# const int methodCount = 15; #>
+<# for (var i = 2; i <= methodCount; i++) { #>
+        public static async UniTask<(int winArgumentIndex, T result)> WhenAny<T>(
+<# for (var j = 1; j <= i; j++) { #>
+            Func<CancellationToken, UniTask<T>> taskFunc<#= j #>,
+<# } #>
+            CancellationToken cancellationToken
+        )
+        {
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            (int winArgumentIndex, T result) result = default;
+
+            try
+            {
+                result = await WhenAny<T>(
+<# for (var j = 1; j <= i; j++) { #>
+                    taskFunc<#= j #>(cts.Token)<#= (j < i) ? "," : "" #>
+<# } #>
+                );
+
+                cts.Cancel();
+            }
+            catch (OperationCanceledException ex) when (ex.CancellationToken == cts.Token)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException(ex.Message, ex, cancellationToken);
+                }
+
+                throw;
+            }
+            finally
+            {
+                cts.Dispose();
+            }
+
+            return result;
+        }
+
+<# } #>
+<# for (var i = 2; i <= methodCount; i++) { #>
+        /// <summary>Return value is winArgumentIndex</summary>
+        public static async UniTask<int> WhenAny(
+<# for (var j = 1; j <= i; j++) { #>
+            Func<CancellationToken, UniTask> taskFunc<#= j #>,
+<# } #>
+            CancellationToken cancellationToken
+        )
+        {
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            int winArgumentIndex = default;
+
+            try
+            {
+                winArgumentIndex = await WhenAny(
+<# for (var j = 1; j <= i; j++) { #>
+                    taskFunc<#= j #>(cts.Token)<#= (j < i) ? "," : "" #>
+<# } #>
+                );
+
+                cts.Cancel();
+            }
+            catch (OperationCanceledException ex) when (ex.CancellationToken == cts.Token)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException(ex.Message, ex, cancellationToken);
+                }
+
+                throw;
+            }
+            finally
+            {
+                cts.Dispose();
+            }
+
+            return winArgumentIndex;
+        }
+
+<# } #>
+<# for (var i = 2; i <= methodCount; i++) { #>
+        public static async UniTask<(int winArgumentIndex, <# Write(string.Join(", ", Enumerable.Range(1, i).Select(j => $"T{j} result{j}"))); #>)> WhenAny<<# Write(string.Join(", ", Enumerable.Range(1, i).Select(j => $"T{j}"))); #>>(<# Write(string.Join(", ", Enumerable.Range(1, i).Select(j => $"Func<CancellationToken, UniTask<T{j}>> taskFunc{j}"))); #>, CancellationToken cancellationToken)
+        {
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            (int winArgumentIndex, <# Write(string.Join(", ", Enumerable.Range(1, i).Select(j => $"T{j} result{j}"))); #>) result = default;
+
+            try
+            {
+                result = await WhenAny<<# Write(string.Join(", ", Enumerable.Range(1, i).Select(j => $"T{j}"))); #>>(
+<# for (var j = 1; j <= i; j++) { #>
+                    taskFunc<#= j #>(cts.Token)<#= (j < i) ? "," : "" #>
+<# } #>
+                );
+
+                cts.Cancel();
+            }
+            catch (OperationCanceledException ex) when (ex.CancellationToken == cts.Token)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException(ex.Message, ex, cancellationToken);
+                }
+
+                throw;
+            }
+            finally
+            {
+                cts.Dispose();
+            }
+
+            return result;
+        }
+<# if (i < methodCount) WriteLine(""); #>
+<# } #>
+    }
+}
+#endif

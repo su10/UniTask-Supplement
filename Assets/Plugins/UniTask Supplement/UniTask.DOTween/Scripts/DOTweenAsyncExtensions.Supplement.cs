@@ -6,7 +6,12 @@ namespace Cysharp.Threading.Tasks
 {
     public static partial class DOTweenAsyncExtensions
     {
-        private const TweenCancelBehaviour DefaultTweenCancelBehaviour = TweenCancelBehaviour.KillAndCancelAwait;
+        private const TweenCancelBehaviour DefaultTweenCancelBehaviour =
+#if UNITASK_SUPPLEMENT_DOTWEEN_SUPPORT_USE_ORIGINAL_DEFAULT_TWEEN_CANCEL_BEHAVIOUR
+            TweenCancelBehaviour.Kill;
+#else
+            TweenCancelBehaviour.KillAndCancelAwait;
+#endif
 
         public static UniTask ToUniTask(this Tween tween, CancellationToken cancellationToken)
         {

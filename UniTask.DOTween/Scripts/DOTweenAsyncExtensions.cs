@@ -48,10 +48,10 @@ namespace Cysharp.Threading.Tasks
             Error.ThrowArgumentNullException(tween, nameof(tween));
 
             if (!tween.IsActive()) return UniTask.CompletedTask;
-            return new UniTask(TweenConfiguredSource.Create(tween, TweenCancelBehaviour.Kill, cancellationToken, CallbackType.Kill, out var token), token);
+            return new UniTask(TweenConfiguredSource.Create(tween, DefaultTweenCancelBehaviour, cancellationToken, CallbackType.Kill, out var token), token);
         }
 
-        public static UniTask ToUniTask(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = TweenCancelBehaviour.Kill, CancellationToken cancellationToken = default)
+        public static UniTask ToUniTask(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = DefaultTweenCancelBehaviour, CancellationToken cancellationToken = default)
         {
             Error.ThrowArgumentNullException(tween, nameof(tween));
 
@@ -59,7 +59,7 @@ namespace Cysharp.Threading.Tasks
             return new UniTask(TweenConfiguredSource.Create(tween, tweenCancelBehaviour, cancellationToken, CallbackType.Kill, out var token), token);
         }
 
-        public static UniTask AwaitForComplete(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = TweenCancelBehaviour.Kill, CancellationToken cancellationToken = default)
+        public static UniTask AwaitForComplete(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = DefaultTweenCancelBehaviour, CancellationToken cancellationToken = default)
         {
             Error.ThrowArgumentNullException(tween, nameof(tween));
 
@@ -67,7 +67,7 @@ namespace Cysharp.Threading.Tasks
             return new UniTask(TweenConfiguredSource.Create(tween, tweenCancelBehaviour, cancellationToken, CallbackType.Complete, out var token), token);
         }
 
-        public static UniTask AwaitForPause(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = TweenCancelBehaviour.Kill, CancellationToken cancellationToken = default)
+        public static UniTask AwaitForPause(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = DefaultTweenCancelBehaviour, CancellationToken cancellationToken = default)
         {
             Error.ThrowArgumentNullException(tween, nameof(tween));
 
@@ -75,7 +75,7 @@ namespace Cysharp.Threading.Tasks
             return new UniTask(TweenConfiguredSource.Create(tween, tweenCancelBehaviour, cancellationToken, CallbackType.Pause, out var token), token);
         }
 
-        public static UniTask AwaitForPlay(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = TweenCancelBehaviour.Kill, CancellationToken cancellationToken = default)
+        public static UniTask AwaitForPlay(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = DefaultTweenCancelBehaviour, CancellationToken cancellationToken = default)
         {
             Error.ThrowArgumentNullException(tween, nameof(tween));
 
@@ -83,7 +83,7 @@ namespace Cysharp.Threading.Tasks
             return new UniTask(TweenConfiguredSource.Create(tween, tweenCancelBehaviour, cancellationToken, CallbackType.Play, out var token), token);
         }
 
-        public static UniTask AwaitForRewind(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = TweenCancelBehaviour.Kill, CancellationToken cancellationToken = default)
+        public static UniTask AwaitForRewind(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = DefaultTweenCancelBehaviour, CancellationToken cancellationToken = default)
         {
             Error.ThrowArgumentNullException(tween, nameof(tween));
 
@@ -91,7 +91,7 @@ namespace Cysharp.Threading.Tasks
             return new UniTask(TweenConfiguredSource.Create(tween, tweenCancelBehaviour, cancellationToken, CallbackType.Rewind, out var token), token);
         }
 
-        public static UniTask AwaitForStepComplete(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = TweenCancelBehaviour.Kill, CancellationToken cancellationToken = default)
+        public static UniTask AwaitForStepComplete(this Tween tween, TweenCancelBehaviour tweenCancelBehaviour = DefaultTweenCancelBehaviour, CancellationToken cancellationToken = default)
         {
             Error.ThrowArgumentNullException(tween, nameof(tween));
 

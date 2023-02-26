@@ -39,7 +39,7 @@ jobs:
           for file in $DOC_FILES; do
             git checkout $BRANCH_MAIN $file ${file}.meta &> /dev/null || echo $file was not found
           done
-          sed -i -e "s/\"version\":.*$/\"version\": \"${TAG_NAME#v}\",/" package.json || echo package.json was not found
+          sed -i -e "s/\"version\":.*$/\"version\": \"${TAG_NAME#v}\",/" "Assets/Plugins/UniTask Supplement/package.json" || echo package.json was not found
           git commit -am "release $TAG_NAME."
           git push -f origin $BRANCH_UPM
           git tag $BRANCH_UPM/$TAG_NAME

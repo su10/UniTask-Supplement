@@ -1,0 +1,23 @@
+{
+  "name": "com.jagapippi.unitask-supplement",
+  "version": "1.0.0",
+  "displayName": "UniTask Supplement",
+  "description": "Supplemental codes for UniTask.",
+  "unity": "2018.4",
+  "author": {
+    "name": "su10",
+    "url": "https://github.com/su10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/su10/UniTask-Supplement"
+  },
+  "dependencies": {
+    "com.cysharp.unitask": ">=2.0.21"
+  },
+  "keywords": [
+    "unitask"
+  ],
+  "license": "MIT",
+  "licensesUrl": "https://github.com/su10/UniTask-Supplement/blob/main/LICENSE.md"
+}

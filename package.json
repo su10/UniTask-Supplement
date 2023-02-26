@@ -13,7 +13,7 @@
     "url": "https://github.com/su10/UniTask-Supplement"
   },
   "dependencies": {
-    "com.cysharp.unitask": ">=2.0.21"
+    "com.cysharp.unitask": "2.0.21"
   },
   "keywords": [
     "unitask"

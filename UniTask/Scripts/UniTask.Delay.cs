@@ -66,5 +66,32 @@ namespace Cysharp.Threading.Tasks
             return Delay(millisecondsDelay, delayType, delayTiming, cancellationToken);
         }
 #endif
+
+#if !UNITASK_SUPPLEMENT_DISABLE_DELAY_SECONDS
+        public static UniTask DelaySeconds(float secondsDelay, CancellationToken cancellationToken)
+        {
+            return Delay(TimeSpan.FromSeconds(secondsDelay), false, PlayerLoopTiming.Update, cancellationToken);
+        }
+
+        public static UniTask DelaySeconds(float secondsDelay, bool ignoreTimeScale, CancellationToken cancellationToken)
+        {
+            return Delay(TimeSpan.FromSeconds(secondsDelay), ignoreTimeScale, PlayerLoopTiming.Update, cancellationToken);
+        }
+
+        public static UniTask DelaySeconds(float secondsDelay, bool ignoreTimeScale, PlayerLoopTiming delayTiming, CancellationToken cancellationToken)
+        {
+            return Delay(TimeSpan.FromSeconds(secondsDelay), ignoreTimeScale, delayTiming, cancellationToken);
+        }
+
+        public static UniTask DelaySeconds(float secondsDelay, DelayType delayType, CancellationToken cancellationToken)
+        {
+            return Delay(TimeSpan.FromSeconds(secondsDelay), delayType, PlayerLoopTiming.Update, cancellationToken);
+        }
+
+        public static UniTask DelaySeconds(float secondsDelay, DelayType delayType, PlayerLoopTiming delayTiming, CancellationToken cancellationToken)
+        {
+            return Delay(TimeSpan.FromSeconds(secondsDelay), delayType, delayTiming, cancellationToken);
+        }
+#endif
     }
 }

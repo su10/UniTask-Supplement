@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+env:
+  BRANCH_MAIN: main
+  BRANCH_UPM: upm
+  GIT_TAG: ${{ github.event.inputs.tag }}
+  PACKAGE_ROOT: Assets/Plugins/UniTask Supplement
+  DOC_FILES: README.md CHANGELOG.md LICENSE.md
+
+jobs:
+  create-upm-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: git checkout main
+
+      - name: Configure git
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Set tag name
+        id: tag
+        run: echo "name=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+
+      - name: Create UPM branches
+        run: |
+          git branch -D $BRANCH_UPM &> /dev/null || echo $BRANCH_UPM branch was not found
+          git subtree split -P "$PACKAGE_ROOT" -b $BRANCH_UPM
+          git checkout $BRANCH_UPM
+          for file in $DOC_FILES; do
+            git checkout $BRANCH_MAIN $file ${file}.meta &> /dev/null || echo $file was not found
+          done
+          sed -i -e "s/\"version\":.*$/\"version\": \"${TAG_NAME#v}\",/" package.json || echo package.json was not found
+          git commit -am "release $TAG_NAME."
+          git push -f origin $BRANCH_UPM
+          git tag $BRANCH_UPM/$TAG_NAME
+          git push -f origin $BRANCH_UPM/$TAG_NAME
+        env:
+          TAG_NAME: ${{ steps.tag.outputs.name }}

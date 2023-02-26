@@ -26,7 +26,7 @@ namespace Cysharp.Threading.Tasks
         CompleteWithSequenceCallbackAndCancelAwait
     }
 
-    public static class DOTweenAsyncExtensions
+    public static partial class DOTweenAsyncExtensions
     {
         enum CallbackType
         {

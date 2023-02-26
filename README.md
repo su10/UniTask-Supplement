@@ -156,6 +156,65 @@ var (winArgumentIndex, result) = await UniTask.WhenAny<T>(
 
 You can disable `WhenAny(.., cancellationToken)` to define `UNITASK_SUPPLEMENT_DISABLE_WHEN_ANY`.
 
+### DOTween integration
+#### Shorthands
+```csharp
+// UniTask
+await tween.ToUniTask(cancellationToken: cancellationToken);
+await tween.AwaitForComplete(cancellationToken: cancellationToken);
+await tween.AwaitForPause(cancellationToken: cancellationToken);
+await tween.AwaitForPlay(cancellationToken: cancellationToken);
+await tween.AwaitForRewind(cancellationToken: cancellationToken);
+await tween.AwaitForStepComplete(cancellationToken: cancellationToken);
+
+// with UniTask Supplement
+await tween.ToUniTask(cancellationToken);
+await tween.AwaitForComplete(cancellationToken);
+await tween.AwaitForPause(cancellationToken);
+await tween.AwaitForPlay(cancellationToken);
+await tween.AwaitForRewind(cancellationToken);
+await tween.AwaitForStepComplete(cancellationToken);
+```
+
+You can **enable** this behavior to define `UNITASK_SUPPLEMENT_DOTWEEN_SUPPORT` instead of `UNITASK_DOTWEEN_SUPPORT`.
+
+#### Change default value of `TweenCancelBehaviour` to `KillAndCancelAwait`
+See [this thread (Twitter)](https://twitter.com/ishida_gigacee/status/1569951411160645633?s=20) for why this should be.
+
+```csharp
+// UniTask
+// OperationCanceledException will not be thrown when canceled.
+await tween.WithCancellation(cancellationToken);
+await tween.ToUniTask(cancellationToken: cancellationToken);
+await tween.AwaitForComplete(cancellationToken: cancellationToken);
+await tween.AwaitForPause(cancellationToken: cancellationToken);
+await tween.AwaitForPlay(cancellationToken: cancellationToken);
+await tween.AwaitForRewind(cancellationToken: cancellationToken);
+await tween.AwaitForStepComplete(cancellationToken: cancellationToken);
+
+// but with UniTask Supplement, OperationCanceledException will be thrown when canceled.
+```
+
+```csharp
+// UniTask
+await tween.ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
+await tween.AwaitForComplete(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
+await tween.AwaitForPause(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
+await tween.AwaitForPlay(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
+await tween.AwaitForRewind(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
+await tween.AwaitForStepComplete(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
+
+// with UniTask Supplement
+await tween.ToUniTask(cancellationToken);
+await tween.AwaitForComplete(cancellationToken);
+await tween.AwaitForPause(cancellationToken);
+await tween.AwaitForPlay(cancellationToken);
+await tween.AwaitForRewind(cancellationToken);
+await tween.AwaitForStepComplete(cancellationToken);
+```
+
+You can restore original behavior to define `UNITASK_SUPPLEMENT_DOTWEEN_SUPPORT_USE_ORIGINAL_DEFAULT_TWEEN_CANCEL_BEHAVIOUR`.
+
 ## Installation
 ### Install via OpenUPM (Recommended)
 The package is available on the [openupm registry](https://openupm.com/). It's recommended to install it via [openupm-cli](https://github.com/openupm/openupm-cli).

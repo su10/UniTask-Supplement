@@ -31,7 +31,7 @@ await UniTask.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
 
 ```csharp
 // UniTask
-await UniTask.Delay(500, cancellationToken: cancellationToken);
+await UniTask.DelayMilliseconds(500, cancellationToken: cancellationToken);
 
 // with UniTask Supplement
 await UniTask.DelayMilliseconds(500, cancellationToken);
